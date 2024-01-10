@@ -1,4 +1,4 @@
-﻿namespace eShop.Data.Entities;
+﻿namespace CarProject.Data.Entities;
 
 public class CarColor
 {

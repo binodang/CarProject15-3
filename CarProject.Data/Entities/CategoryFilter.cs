@@ -1,5 +1,4 @@
-﻿namespace eShop.Data.Entities;
-
+﻿namespace CarProject.Data.Entities;
 public class CategoryFilter
 {
     public int FilterId { get; set; }
