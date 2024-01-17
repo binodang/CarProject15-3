@@ -5,5 +5,4 @@ public class Brand : IEntety
     public string Name { get; set; }
     public OptionType OptionType { get; set; }
     public List<Car>? Cars { get; set; }
-
 }

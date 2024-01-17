@@ -12,11 +12,8 @@ public class Car : IEntety
     public int VehicleTypeId { get; set; }
     public VehicleType VehicleType { get; set; }
 
-    
-    public int CategoryId { get; set; }
-    public Category Category { get; set; }
-
-    
-    public int ColorId { get; set; }
-    public Color Color { get; set; }
+    public List<CarColor> CarColors { get; set; }
+    public List<CarCategory> CarCategories { get; set; }
+    public List<Category>? Categories { get; set; }
+    public List<Color>? Colors { get; set; }
 }

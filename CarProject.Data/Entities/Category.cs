@@ -6,5 +6,5 @@ public class Category : IEntety
     public string Name { get; set; }
     public List<Car>? Cars { get; set; }
     public List<Filter>? Filters { get; set; }
-
+    public List<CarCategory> CarCategories { get; set; }
 }

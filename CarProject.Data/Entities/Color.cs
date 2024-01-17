@@ -7,4 +7,5 @@ public class Color : IEntety
     public string Name { get; set; }
     public OptionType OptionType { get; set; }
     public List<Car>? Cars { get; set; }
+    public List<CarColor> CarColors { get; set; }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarProject.Data.Contexts;
 
-public class CarShopContext(DbContextOptions<CarShopContext> options) : DbContext(options)
+public class CarShopContext(DbContextOptions<CarShopContext> builder) : DbContext(builder)
 {
     public DbSet<Brand> Brands => Set<Brand>();
     public DbSet<Car> Cars => Set<Car>();
@@ -20,40 +20,49 @@ public class CarShopContext(DbContextOptions<CarShopContext> options) : DbContex
         base.OnModelCreating(builder);
 
         // En-till-Många Relationship: Car till Brand
-        // Varje Car är kopplad till en Brand, och varje Brand kan ha många Cars.
         builder.Entity<Car>()
             .HasOne(c => c.Brand)
             .WithMany(b => b.Cars)
             .HasForeignKey(c => c.BrandId);
 
         // En-till-Många Relationship: Car till VehicleType
-        // Varje Car är kopplad till ett VehicleType, och varje VehicleType kan ha många Cars.
         builder.Entity<Car>()
             .HasOne(c => c.VehicleType)
             .WithMany(vt => vt.Cars)
             .HasForeignKey(c => c.VehicleTypeId);
 
-        // En-till-Många Relationship: Car till Category
-        // Varje Car är kopplad till en Category, och varje Category kan ha många Cars.
+        // Många-till-Många Relationship: Car till Category
         builder.Entity<Car>()
-            .HasOne(c => c.Category)
+            .HasMany(c => c.Categories)
             .WithMany(cat => cat.Cars)
-            .HasForeignKey(c => c.CategoryId);
+            .UsingEntity<CarCategory>(
+                j => j
+                    .HasOne(cc => cc.Category)
+                    .WithMany(cat => cat.CarCategories)
+                    .HasForeignKey(cc => cc.CategoryId),
+                j => j
+                    .HasOne(cc => cc.Car)
+                    .WithMany(c => c.CarCategories)
+                    .HasForeignKey(cc => cc.CarId),
+                j => j.HasKey(cc => new { cc.CarId, cc.CategoryId }));
 
-        // En-till-Många Relationship: Car till Color
-        // Varje Car är kopplad till en Color, och varje Color kan ha många Cars.
+        // Många-till-Många Relationship: Car till Color
         builder.Entity<Car>()
-            .HasOne(c => c.Color)
+            .HasMany(c => c.Colors)
             .WithMany(col => col.Cars)
-            .HasForeignKey(c => c.ColorId);
+            .UsingEntity<CarColor>(
+                j => j
+                    .HasOne(cc => cc.Color)
+                    .WithMany(col => col.CarColors)
+                    .HasForeignKey(cc => cc.ColorId),
+                j => j
+                    .HasOne(cc => cc.Car)
+                    .WithMany(c => c.CarColors)
+                    .HasForeignKey(cc => cc.CarId),
+                j => j.HasKey(cc => new { cc.CarId, cc.ColorId }));
 
-        builder.Entity<CarCategory>()
-        .HasKey(cc => new { cc.CarId, cc.CategoryId });
-
-        builder.Entity<CarColor>()
-        .HasKey(cc => new { cc.CarId, cc.ColorId });
-
-
+        builder.Entity<CategoryFilter>()
+    .HasKey(cf => new { cf.CategoryId, cf.FilterId });
     }
 
 
